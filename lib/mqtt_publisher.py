@@ -19,4 +19,4 @@ class MQTTPublisher():
         logger.debug(f"on_publish, client {client} userdata {userdata}, mid {mid}")
 
     def publish(self, topic: str, value: int):
-        self.client.publish(f"{self.ROOT_TOPIC}/{topic}", value)
+        self.client.publish(f"/{self.ROOT_TOPIC}/{topic}", value)
