@@ -19,4 +19,4 @@ class WindSensorConfig():
     MODBUS_MODE = 'rtu'
     READ_TIMEOUT = 4
 
-    WIND_REG = 0x2A
+    WIND_REG = 42
