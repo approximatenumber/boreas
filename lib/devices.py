@@ -14,8 +14,8 @@ class ModBusDevice():
         self.conn.serial.baudrate = self.config.BAUDRATE
         self.conn.serial.timeout = self.config.READ_TIMEOUT
 
-    def read_register(self, register: int, decimals: int = 1) -> str:
-        return self.conn.read_register(register, decimals, functioncode=3)
+    def read_register(self, register: int) -> str:
+        return self.conn.read_register(register, functioncode=3)
 
 
 class Controller(ModBusDevice):
@@ -24,7 +24,7 @@ class Controller(ModBusDevice):
         super().__init__(config=config)
 
     def get_state(self):
-        return self.read_register(self.config.STATE_REG, self.config.STATE_DECIM)
+        return self.read_register(self.config.STATE_REG)
 
     def get_battery_voltage(self):
         return self.read_register(self.config.BAT_VOLT_REG)
@@ -47,4 +47,4 @@ class WindSensor(ModBusDevice):
         super().__init__(config=config)
     
     def get_wind_power(self):
-        return self.read_register(self.config.WIND_PWR_REG)
+        return self.read_register(self.config.WIND_REG)
