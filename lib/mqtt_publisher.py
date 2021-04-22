@@ -16,7 +16,7 @@ class MQTTPublisher():
         self.client.connect(self.BROKER_HOST)
 
     def _on_publish(self, client, userdata, mid):
-        logger.error(f"on_publish, client {client} userdata {userdata}, mid {mid}")
+        logger.debug(f"on_publish, client {client} userdata {userdata}, mid {mid}")
 
     def publish(self, topic: str, value: int):
         self.client.publish(f"{self.ROOT_TOPIC}/{topic}", value)
