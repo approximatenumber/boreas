@@ -1,5 +1,8 @@
+from time import sleep
 from lib.mqtt_publisher import MQTTPublisher
 from lib.devices import Controller, WindSensor
+
+PUBLISH_TIMEOUT = 5
 
 publisher = MQTTPublisher()
 controller = Controller()
@@ -14,10 +17,13 @@ data_dispath = {
     }
 }
 
-for device, topic_to_function in data_dispath.items():
-    for topic, function in topic_to_function.items():
-        value = function()
-        if not value:
-            print(f"Cannot get data from \"{device}\" for topic \"{topic}\"")
-            continue
-        publisher.publish(topic=f"{device}/{topic}", value=value)
+while True:
+
+    for device, topic_to_function in data_dispath.items():
+        for topic, function in topic_to_function.items():
+            value = function()
+            if not value:
+                print(f"Cannot get data from device \"{device}\" for topic \"{topic}\"")
+                continue
+            publisher.publish(topic=f"{device}/{topic}", value=value)
+    sleep(PUBLISH_TIMEOUT)
