@@ -10,7 +10,7 @@ PUBLISH_TIMEOUT = 5
 
 def main():
 
-    logger = Logger.get_logger('boreas', loglevel=logging.DEBUG)
+    logger = Logger.get_logger('boreas')
     parser = argparse.ArgumentParser()
     parser.add_argument('-d', '--debug', action='store_true', help='enable debug mode')
     args = parser.parse_args()
