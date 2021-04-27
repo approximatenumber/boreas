@@ -1,8 +1,8 @@
 import minimalmodbus
-import logging
+from lib.logger import Logger
 
 
-logger = logging.getLogger('boreas')
+logger = Logger.get_logger('boreas')
 
 
 class ModBusDevice():
@@ -19,4 +19,8 @@ class ModBusDevice():
     def read_register(self, register: int) -> str:
         logger.debug(
             f"Reading from port={self.config.PORT}, slave={self.config.SLAVE_ADDRESS}, reg={register}")
-        return self.conn.read_register(register, functioncode=3)
+        try:
+            return self.conn.read_register(register, functioncode=3)
+        except minimalmodbus.InvalidResponseError:
+            logger.error("Cannot read data")
+            return None

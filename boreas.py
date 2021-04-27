@@ -4,12 +4,13 @@ import argparse
 from lib.mqtt_publisher import MQTTPublisher
 from lib.controller import Controller
 from lib.wind_sensor import WindSensor
+from lib.logger import Logger
 
 PUBLISH_TIMEOUT = 5
 
 def main():
 
-    logger = logging.getLogger('boreas')
+    logger = Logger.get_logger('boreas', loglevel=logging.DEBUG)
     parser = argparse.ArgumentParser()
     parser.add_argument('-d', '--debug', action='store_true', help='enable debug mode')
     args = parser.parse_args()
