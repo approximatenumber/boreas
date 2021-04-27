@@ -1,0 +1,13 @@
+[Unit]
+Description=Boreas
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/boreas
+ExecStart=/usr/local/bin/python3.7 boreas.py
+Restart=always
+RestartSec=10s
+
+[Install]
+WantedBy=default.targetr
