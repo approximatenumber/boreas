@@ -1,4 +1,6 @@
 from time import sleep
+import logging
+import argparse
 from lib.mqtt_publisher import MQTTPublisher
 from lib.controller import Controller
 from lib.wind_sensor import WindSensor
@@ -38,13 +40,27 @@ data_dispath = {
     }
 }
 
-while True:
 
-    for device, topic_to_function in data_dispath.items():
-        for topic, function in topic_to_function.items():
-            value = function()
-            if not isinstance(value, (int, float)):
-                print(f"Cannot get data from device \"{device}\" for topic \"{topic}\"")
-                continue
-            publisher.publish(topic=f"{device}/{topic}", value=value)
-    sleep(PUBLISH_TIMEOUT)
+def main():
+
+    logger = logging.getLogger('boreas')
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-d', '--debug', action='store_true', help='enable debug mode')
+    args = parser.parse_args()
+
+    if args.debug:
+        logger.setLevel(logging.DEBUG)
+
+    while True:
+        for device, topic_to_function in data_dispath.items():
+            for topic, function in topic_to_function.items():
+                value = function()
+                if not isinstance(value, (int, float)):
+                    print(f"Cannot get data from device \"{device}\" for topic \"{topic}\"")
+                    continue
+                publisher.publish(topic=f"{device}/{topic}", value=value)
+        sleep(PUBLISH_TIMEOUT)
+
+
+if __name__ == '__main__':
+    main()

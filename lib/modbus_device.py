@@ -1,4 +1,8 @@
 import minimalmodbus
+import logging
+
+
+logger = logging.getLogger('boreas')
 
 
 class ModBusDevice():
@@ -13,4 +17,6 @@ class ModBusDevice():
         self.conn.serial.timeout = self.config.READ_TIMEOUT
 
     def read_register(self, register: int) -> str:
+        logger.debug(
+            f"Reading from port={self.config.PORT}, slave={self.config.SLAVE_ADDRESS}, reg={register}")
         return self.conn.read_register(register, functioncode=3)
