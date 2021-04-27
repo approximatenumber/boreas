@@ -1,6 +1,7 @@
 from time import sleep
 from lib.mqtt_publisher import MQTTPublisher
-from lib.devices import Controller, WindSensor
+from lib.controller import Controller
+from lib.wind_sensor import WindSensor
 
 PUBLISH_TIMEOUT = 5
 

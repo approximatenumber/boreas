@@ -1,21 +1,7 @@
 import minimalmodbus
 
 from lib.device_configurations import ControllerConfig
-
-
-class ModBusDevice():
-    def __init__(self, config=None):
-        self.config = config
-        self.conn = minimalmodbus.Instrument(
-            self.config.PORT,
-            self.config.SLAVE_ADDRESS,
-            mode=self.config.MODBUS_MODE
-        )
-        self.conn.serial.baudrate = self.config.BAUDRATE
-        self.conn.serial.timeout = self.config.READ_TIMEOUT
-
-    def read_register(self, register: int, decimals: int = 1) -> float:
-        return self.conn.read_register(register, decimals, functioncode=3)
+from lib.modbus_device import ModBusDevice
 
 
 class Controller(ModBusDevice):
@@ -24,7 +10,7 @@ class Controller(ModBusDevice):
         super().__init__(config=config)
 
     def get_state(self):
-        return self.read_register(self.config.STATE_REG, self.config.STATE_DECIM)
+        return self.read_register(self.config.STATE_REG)
 
     def get_battery_voltage(self):
         return self.read_register(self.config.BAT_VOLT_REG)
