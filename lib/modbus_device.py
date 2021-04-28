@@ -21,6 +21,6 @@ class ModBusDevice():
             f"Reading from port={self.config.PORT}, slave={self.config.SLAVE_ADDRESS}, reg={register}")
         try:
             return self.conn.read_register(register, functioncode=3)
-        except minimalmodbus.InvalidResponseError:
-            logger.error("Cannot read data")
+        except Exception as e:
+            logger.error(f"Cannot read data due to error: {e}")
             return None
