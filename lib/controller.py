@@ -54,7 +54,7 @@ class Controller(ModBusDevice):
     def get_accum_wind_gen_energy(self):
         high = self.read_register(self.config.ACCUM_WIND_GEN_ENERGY_HIGH)
         low = self.read_register(self.config.ACCUM_WIND_GEN_ENERGY_LOW)
-        if not high and low:
+        if not high or not low:
             return None
         return high+low
 
@@ -64,7 +64,7 @@ class Controller(ModBusDevice):
     def get_accum_solar_gen_energy(self):
         high = self.read_register(self.config.ACCUM_SOLAR_GEN_ENERGY_HIGH)
         low = self.read_register(self.config.ACCUM_SOLAR_GEN_ENERGY_LOW)
-        if not high and low:
+        if not high or not low:
             return None
         return high+low
 
@@ -74,7 +74,7 @@ class Controller(ModBusDevice):
     def get_total_gen_energy(self):
         high = self.read_register(self.config.TOTAL_GEN_ENERGY_HIGH)
         low = self.read_register(self.config.TOTAL_GEN_ENERGY_LOW)
-        if not high and low:
+        if not high or not low:
             return None
         return high+low
 
@@ -84,6 +84,6 @@ class Controller(ModBusDevice):
     def get_total_consump_energy(self):
         high = self.read_register(self.config.TOTAL_CONSUMP_ENERGY_HIGH)
         low = self.read_register(self.config.TOTAL_CONSUMP_ENERGY_LOW)
-        if not high and low:
+        if not high or not low:
             return None        
         return high+low
