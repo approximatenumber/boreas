@@ -40,3 +40,17 @@ class WindSensorConfig():
     READ_TIMEOUT = 4
 
     WIND_REG = 42
+
+class TorqueMeterConfig():
+    PORT = '/dev/ttyUSB0'
+    BAUDRATE = 9600
+    TIMEOUT = 0.5
+
+    PEAK_CMD = '#01'
+
+class SpeedMeterConfig():
+    PORT = '/dev/ttyUSB0'
+    BAUDRATE = 9600
+    TIMEOUT = 0.5
+
+    SPEED_CMD = '#02'

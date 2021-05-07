@@ -1,7 +1,7 @@
 import minimalmodbus
 
-from lib.device_configurations import WindSensorConfig
-from lib.modbus_device import ModBusDevice
+from lib.devices.device_configurations import WindSensorConfig
+from lib.devices.modbus_device import ModBusDevice
 
 
 class WindSensor(ModBusDevice):

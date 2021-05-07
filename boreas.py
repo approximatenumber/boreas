@@ -1,9 +1,11 @@
 from time import sleep
 import logging
 import argparse
-from lib.mqtt_publisher import MQTTPublisher
-from lib.controller import Controller
-from lib.wind_sensor import WindSensor
+from lib.devices.mqtt_publisher import MQTTPublisher
+from lib.devices.controller import Controller
+from lib.devices.wind_sensor import WindSensor
+from lib.devices.torque_meter import TorqueMeter
+from lib.devices.speed_meter import SpeedMeter
 from lib.logger import Logger
 
 PUBLISH_TIMEOUT = 5
@@ -21,6 +23,8 @@ def main():
     publisher = MQTTPublisher()
     controller = Controller()
     wind_sensor = WindSensor()
+    torque_meter = TorqueMeter()
+    speed_meter = SpeedMeter()
 
     data_dispath = {
         'controller': {
@@ -48,6 +52,12 @@ def main():
         },
         'wind_sensor': {
             'wind_power': wind_sensor.get_wind_power
+        },
+        'speed_meter': { 
+            'speed': speed_meter.get_speed
+        },
+        'torque_meter': {
+            'torque': torque_meter.get_peak
         }
     }
 
