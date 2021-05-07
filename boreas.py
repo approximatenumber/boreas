@@ -1,7 +1,7 @@
 from time import sleep
 import logging
 import argparse
-from lib.devices.mqtt_publisher import MQTTPublisher
+from lib.mqtt_publisher import MQTTPublisher
 from lib.devices.controller import Controller
 from lib.devices.wind_sensor import WindSensor
 from lib.devices.torque_meter import TorqueMeter
