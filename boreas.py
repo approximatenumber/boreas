@@ -67,8 +67,10 @@ def main():
                 value = function()
                 if not isinstance(value, (int, float)):
                     logger.error(f"Cannot get data from device \"{device}\" for topic \"{topic}\"")
-                    continue
+                    logger.error(f"Skipping further readings from \"{device}\" until next try")
+                    break
                 publisher.publish(topic=f"{device}/{topic}", value=value)
+                logger.debug(f"Published: topic={device}/{topic}, value={value}")
         sleep(PUBLISH_TIMEOUT)
 
 

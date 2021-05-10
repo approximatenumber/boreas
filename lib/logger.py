@@ -2,6 +2,8 @@ import logging
 
 class Logger:
     handler = logging.StreamHandler()
+    _format = logging.Formatter('%(asctime)s:%(levelname)s:%(message)s')
+    handler.setFormatter(_format)
 
     @classmethod
     def get_logger(cls, name, loglevel=logging.INFO):
