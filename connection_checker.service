@@ -1,0 +1,13 @@
+[Unit]
+Description=Boreas connection checker
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/boreas
+ExecStart=/bin/bash connection_checker.sh
+Restart=always
+RestartSec=10s
+
+[Install]
+WantedBy=default.target
