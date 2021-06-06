@@ -6,6 +6,7 @@ from lib.devices.controller import Controller
 from lib.devices.wind_sensor import WindSensor
 from lib.devices.torque_meter import TorqueMeter
 from lib.devices.speed_meter import SpeedMeter
+from lib.devices.misc import MiscDevices
 from lib.logger import Logger
 
 PUBLISH_TIMEOUT = 5
@@ -25,6 +26,7 @@ def main():
     wind_sensor = WindSensor()
     torque_meter = TorqueMeter()
     speed_meter = SpeedMeter()
+    misc_devices = MiscDevices()
 
     data_dispath = {
         'controller': {
@@ -58,6 +60,9 @@ def main():
         },
         'torque_meter': {
             'torque': torque_meter.get_peak
+        },
+        'misc': {
+            'cpu_temp': misc.get_cpu_temp
         }
     }
 
