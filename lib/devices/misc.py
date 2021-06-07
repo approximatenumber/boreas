@@ -1,7 +1,7 @@
 class MiscDevices():
 
     CPU_TEMP_PATH = "/sys/class/thermal/thermal_zone0/temp"
-    BOARD_TEPM_PATH = "/sys/class/hwmon/hwmon0/temp1_input"
+    BOARD_TEMP_PATH = "/sys/class/hwmon/hwmon0/temp1_input"
 
     def __init__(self):
         pass
@@ -13,7 +13,7 @@ class MiscDevices():
         :param _round: round number
         """
         try:
-            raw_value = open(self.CPU_TEMP_PATH).read()
+            raw_value = open(path).read()
         except Exception:
             return None
         return round((int(raw_value) / divide), _round)
@@ -24,4 +24,4 @@ class MiscDevices():
 
     def get_board_temp(self) -> int:
         """Get board temperature."""
-        return self._get_value_from_fs(self.BOARD_TEPM_PATH, divide=1000, _round=1)
+        return self._get_value_from_fs(self.BOARD_TEMP_PATH, divide=1000, _round=1)
