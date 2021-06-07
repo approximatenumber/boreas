@@ -62,7 +62,8 @@ def main():
             'torque': torque_meter.get_peak
         },
         'misc': {
-            'cpu_temp': misc_devices.get_cpu_temp
+            'cpu_temp': misc_devices.get_cpu_temp,
+            'board_temp': misc_devices.get_board_temp
         }
     }
 
