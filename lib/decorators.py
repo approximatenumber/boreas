@@ -25,5 +25,5 @@ def multiply_by_10(func):
     """Mutiplies function output value by 10."""
     def wrapped(self):
         value = func(self)
-        return value * 100 if _is_number(str(value)) else None
+        return value * 10 if _is_number(str(value)) else None
     return wrapped
