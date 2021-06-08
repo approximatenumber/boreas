@@ -13,4 +13,8 @@ def divide_by_100(func):
     return wrapped
 
 def multiply_by_10(func):
-    pass
+    """Mutiplies function output value by 10."""
+    def wrapped(self):
+        value = func(self)
+        return value * 100 if value else None
+    return wrapped
