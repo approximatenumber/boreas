@@ -1,7 +1,6 @@
-import minimalmodbus
-
 from lib.devices.device_configurations import ControllerConfig
 from lib.devices.modbus_device import ModBusDevice
+from lib.decorators import divide_by_10
 
 
 class Controller(ModBusDevice):
@@ -12,39 +11,51 @@ class Controller(ModBusDevice):
     def get_state(self):
         return self.read_register(self.config.STATE_REG)
 
+    @divide_by_10
     def get_battery_voltage(self):
         return self.read_register(self.config.BAT_VOLT_REG)
 
+    @divide_by_10
     def get_wind_voltage(self):
         return self.read_register(self.config.WIND_VOLT_REG)
 
+    @divide_by_10
     def get_wind_current(self):
         return self.read_register(self.config.WIND_CURR_REG)
 
+    @divide_by_10
     def get_wind_power(self):
         return self.read_register(self.config.WIND_PWR_REG)
 
+    @divide_by_10
     def get_wind_rotation_speed(self):
         return self.read_register(self.config.WIND_ROT_SPEED_REG)
 
+    @divide_by_10
     def get_pv_voltage(self):
         return self.read_register(self.config.PV_VOLTAGE)
 
+    @divide_by_10
     def get_pv_current(self):
         return self.read_register(self.config.PV_CURRENT)
 
+    @divide_by_10
     def get_pv_power(self):
         return self.read_register(self.config.PV_POWER)
 
+    @divide_by_10
     def get_load_2_current(self):
         return self.read_register(self.config.LOAD_2_CURRENT)
 
+    @divide_by_10
     def get_load_1_current(self):
         return self.read_register(self.config.LOAD_1_CURRENT)
 
+    @divide_by_10
     def get_load_2_power(self):
         return self.read_register(self.config.LOAD_2_POWER)
 
+    @divide_by_10
     def get_load_1_power(self):
         return self.read_register(self.config.LOAD_1_POWER)
 
