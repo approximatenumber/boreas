@@ -3,7 +3,7 @@ class ControllerConfig():
     BAUDRATE = 9600
     PORT = '/dev/ttyRS485-1'
     MODBUS_MODE = 'rtu'
-    READ_TIMEOUT = 4
+    READ_TIMEOUT = 1
 
     STATE_REG = 0
     BAT_VOLT_REG = 1
@@ -37,7 +37,7 @@ class WindSensorConfig():
     BAUDRATE = 9600
     PORT = '/dev/ttyRS485-1'
     MODBUS_MODE = 'rtu'
-    READ_TIMEOUT = 4
+    READ_TIMEOUT = 1
 
     WIND_REG = 42
 
