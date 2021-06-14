@@ -37,20 +37,20 @@ class WindSensorConfig():
     BAUDRATE = 9600
     PORT = '/dev/ttyRS485-1'
     MODBUS_MODE = 'rtu'
-    READ_TIMEOUT = 1
+    READ_TIMEOUT = 2
 
     WIND_REG = 42
 
 class TorqueMeterConfig():
     PORT = '/dev/ttyRS485-2'
     BAUDRATE = 9600
-    TIMEOUT = 0.5
+    TIMEOUT = 1
 
     PEAK_CMD = '#01'
 
 class SpeedMeterConfig():
     PORT = '/dev/ttyRS485-2'
     BAUDRATE = 9600
-    TIMEOUT = 0.5
+    TIMEOUT = 1
 
     SPEED_CMD = '#02'
