@@ -21,16 +21,17 @@ logger = Logger.get_logger('boreas')
 
 
 def publish(publisher, device: str, topic_to_function: Dict[str, str]):
-    logger.info(f"=> Reading device {device}")
-    for topic, function in topic_to_function.items():
-        value = function()
-        if not isinstance(value, (int, float)):
-            logger.error(f"===> Cannot get data from device \"{device}\" for topic \"{topic}\"")
-            # logger.error(f"Skipping further readings from \"{device}\" until next try")
-            continue
-        publisher.publish(topic=f"{device}/{topic}", value=value)
-        logger.info(f"===> Published: topic={device}/{topic}, value={value}")
-    sleep(PUBLISH_TIMEOUT)
+    while True:
+        logger.info(f"=> Reading device {device}")
+        for topic, function in topic_to_function.items():
+            value = function()
+            if not isinstance(value, (int, float)):
+                logger.error(f"===> Cannot get data from device \"{device}\" for topic \"{topic}\"")
+                # logger.error(f"Skipping further readings from \"{device}\" until next try")
+                continue
+            publisher.publish(topic=f"{device}/{topic}", value=value)
+            logger.info(f"===> Published: topic={device}/{topic}, value={value}")
+        sleep(PUBLISH_TIMEOUT)
 
 
 def main():
@@ -91,7 +92,7 @@ def main():
 
     threads = []
     for device, topics_to_functions in dispath.items():
-        thread = threading.Thread(target=publish(publisher, device, topics_to_functions))
+        thread = threading.Thread(target=publish, args=(publisher, device, topics_to_functions))
         thread.start()
         threads.append(thread)
 
