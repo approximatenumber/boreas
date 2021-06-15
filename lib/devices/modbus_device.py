@@ -26,7 +26,7 @@ class ModBusDevice():
             logger.error(f"Cannot read data due to error: {e}")
             return None
 
-    @retry(retries=5, time_between_retries=0, exception_class=Exception)
+    @retry(retries=5, time_between_retries=0.2, exception_class=Exception)
     def __read_register(self, register: int) -> str:
         logger.debug(
             f"Reading from port={self.config.PORT}, slave={self.config.SLAVE_ADDRESS}, reg={register}")
