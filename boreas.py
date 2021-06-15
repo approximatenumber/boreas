@@ -9,7 +9,10 @@ from lib.devices.speed_meter import SpeedMeter
 from lib.devices.misc import MiscDevices
 from lib.logger import Logger
 
+
 PUBLISH_TIMEOUT = 5
+ENABLED_DEVICES = ['controller', 'wind_sensor', 'speed_meter', 'torque_meter', 'misc']
+
 
 def main():
 
@@ -28,7 +31,7 @@ def main():
     speed_meter = SpeedMeter()
     misc_devices = MiscDevices()
 
-    data_dispath = {
+    dispath = {
         'controller': {
             'accum_solar_gen_energy': controller.get_accum_solar_gen_energy,
             'accum_wind_gen_energy': controller.get_accum_wind_gen_energy,
@@ -68,7 +71,12 @@ def main():
     }
 
     while True:
-        for device, topic_to_function in data_dispath.items():
+        for device, topic_to_function in dispath.items():
+
+            if device not in ENABLED_DEVICES:
+                logger.warning(f"Device {device} is disabled for reading")
+                continue
+
             for topic, function in topic_to_function.items():
                 value = function()
                 if not isinstance(value, (int, float)):

@@ -1,6 +1,6 @@
 from lib.devices.device_configurations import ControllerConfig
 from lib.devices.modbus_device import ModBusDevice
-from lib.decorators import divide_by_10
+from lib.wrappers import divide_by_10
 
 
 class Controller(ModBusDevice):
