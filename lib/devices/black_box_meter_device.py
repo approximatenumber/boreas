@@ -33,7 +33,7 @@ class BlackBoxMeterDevice():
 
     def write_value_and_read_answer(self, value):
         try:
-            self.__write_value_and_read_answer(value)
+            return self.__write_value_and_read_answer(value)
         except Exception as err:
             logger.error(f"Cannot write value {value} and read an answer: {err}")
             return None
