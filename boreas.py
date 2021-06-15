@@ -77,14 +77,16 @@ def main():
                 logger.warning(f"Device {device} is disabled for reading")
                 continue
 
+            logger.info(f"=> Reading device {device}")
+
             for topic, function in topic_to_function.items():
                 value = function()
                 if not isinstance(value, (int, float)):
-                    logger.error(f"Cannot get data from device \"{device}\" for topic \"{topic}\"")
+                    logger.error(f"===> Cannot get data from device \"{device}\" for topic \"{topic}\"")
                     # logger.error(f"Skipping further readings from \"{device}\" until next try")
                     continue
                 publisher.publish(topic=f"{device}/{topic}", value=value)
-                logger.debug(f"Published: topic={device}/{topic}, value={value}")
+                logger.debug(f"===> Published: topic={device}/{topic}, value={value}")
         sleep(PUBLISH_TIMEOUT)
 
 
