@@ -19,18 +19,21 @@ class BlackBoxMeterDevice():
         self.conn.write(f"{value}\r".encode())
         time.sleep(0.25)
 
-    @retry(retries=3, time_between_retries=0.1, exception_class=Exception)
     def _read_value(self):
         """Read raw value from port, clean it up and convert to float."""
         raw_value = self.conn.read_all().decode()
         # remove extra symbols from raw string
         return re.sub(r'[=@\r]','', raw_value)
     
-    def write_value_and_read_answer(self, value):
+    @retry(retries=3, time_between_retries=0.1, exception_class=Exception)
+    def __write_value_and_read_answer(self, value):
         self._write_value(value)
+        value = self._read_value()
+        return float(value) if value else None
+
+    def write_value_and_read_answer(self, value):
         try:
-            value = self._read_value()
-            return float(value) if value else None
+            self.__write_value_and_read_answer(value)
         except Exception as err:
-            logger.error(f"Cannot read answer after writing value {value}: {err}")
+            logger.error(f"Cannot write value {value} and read an answer: {err}")
             return None
