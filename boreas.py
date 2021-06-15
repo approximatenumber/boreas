@@ -93,16 +93,16 @@ def main():
 
 
     # first serial port
-    devices_port1 = ['controller', 'wind_sensor']
+    devices_on_same_port1 = ['controller', 'wind_sensor']
     # second serial port
-    devices_port2 = ['torque_meter', 'speed_meter']
+    devices_on_same_port2 = ['torque_meter', 'speed_meter']
     # misc devices
     misc_devices = ['misc']
-    all_devices = [devices_port1, devices_port2, misc_devices]
+    all_devices = [devices_on_same_port1, devices_on_same_port2, misc_devices]
 
     threads = []
     for devices_per_port in all_devices:
-        thread = threading.Thread(target=publish, args=(devices_per_port))
+        thread = threading.Thread(target=publish, args=([devices_per_port]))
         thread.start()
         threads.append(thread)
 
