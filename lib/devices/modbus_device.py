@@ -16,8 +16,6 @@ class ModBusDevice():
         )
         self.conn.serial.baudrate = self.config.BAUDRATE
         self.conn.serial.timeout = self.config.READ_TIMEOUT
-
-
     
     def read_register(self, register: int) -> str:
         try:
@@ -26,7 +24,7 @@ class ModBusDevice():
             logger.error(f"Cannot read data due to error: {e}")
             return None
 
-    @retry(retries=5, time_between_retries=0.2, exception_class=Exception)
+    @retry(retries=3, time_between_retries=0.1, exception_class=Exception)
     def __read_register(self, register: int) -> str:
         logger.debug(
             f"Reading from port={self.config.PORT}, slave={self.config.SLAVE_ADDRESS}, reg={register}")
