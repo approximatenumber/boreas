@@ -19,7 +19,7 @@ class ModBusDevice():
     
     def read_register(self, register: int) -> str:
         try:
-            self.__read_register(register)
+            return self.__read_register(register)
         except Exception as e:
             logger.error(f"Cannot read data due to error: {e}")
             return None
