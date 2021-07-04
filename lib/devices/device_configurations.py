@@ -54,3 +54,11 @@ class SpeedMeterConfig():
     TIMEOUT = 1
 
     SPEED_CMD = '#02'
+
+
+class InverterConfig():
+    PORT = '/dev/ttyMOD1'
+    BAUDRATE = 19200
+    TIMEOUT = 2
+
+    PWR_CONSMP_FROM_NET = 0x44D
