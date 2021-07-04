@@ -67,9 +67,21 @@ dispath = {
 }
 
 
-def publish(devices: List[str]):
+def _publish_topics(device2topics: Dict[str, str]):
+    for device, topic2value in device2topics.items():
+        if not topic2value:
+            logger.warning(f"No data to publish for device {device}")
+            continue
+        for topic, value in topic2value.items():
+            publisher.publish(topic=f"{device}/{topic}", value=value)
+            logger.info(f"===> Published: topic={device}/{topic}, value={value}")
+
+
+def collect_data_and_publish(devices: List[str]):
     while True:
+        device2topics = {}
         for device in devices:
+            device2topics[device] = {}
             logger.info(f"=> Reading device {device}")
             for topic, function in dispath[device].items():
                 value = function()
@@ -77,8 +89,9 @@ def publish(devices: List[str]):
                     logger.error(f"===> Cannot get data from device \"{device}\" for topic \"{topic}\"")
                     # logger.error(f"Skipping further readings from \"{device}\" until next try")
                     continue
-                publisher.publish(topic=f"{device}/{topic}", value=value)
-                logger.info(f"===> Published: topic={device}/{topic}, value={value}")
+                device2topics[device][topic] = value
+
+        _publish_topics(device2topics)
         sleep(PUBLISH_TIMEOUT)
 
 
@@ -102,7 +115,7 @@ def main():
 
     threads = []
     for devices_per_port in all_devices:
-        thread = threading.Thread(target=publish, args=([devices_per_port]))
+        thread = threading.Thread(target=collect_data_and_publish, args=([devices_per_port]))
         thread.start()
         threads.append(thread)
 
