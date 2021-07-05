@@ -61,4 +61,4 @@ class InverterConfig():
     BAUDRATE = 19200
     TIMEOUT = 2
 
-    PWR_CONSMP_FROM_NET = 0x44D
+    PWR_CONSMP_FROM_NET = [0x44D]

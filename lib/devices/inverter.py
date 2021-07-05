@@ -67,5 +67,5 @@ class InverterPacket():
         return checksum
 
 
-inverer = Inverter()
-print(inverer.get_pwr_consmp_from_net())
+# inverer = Inverter()
+# print(inverer.get_pwr_consmp_from_net())
