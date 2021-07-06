@@ -17,6 +17,7 @@ class Inverter():
 
     def _send_packet_and_get_answer(self, packet):
         print(f"sending packet {packet}...")
+        self.serial.flush()
         for sent_byte in packet:
             self.serial.write(sent_byte)
             received_byte = self.serial.read(len(sent_byte))
@@ -53,11 +54,11 @@ class Inverter():
             answer = self._send_packet_and_get_answer(packet)
             return answer[1]
         _M_POWhourNET_L = get_M_POWhourNET_L()
-        time.sleep(2)
+        time.sleep(5)
         _M_POWhourNET_H = get_M_POWhourNET_H()
-        time.sleep(2)
+        time.sleep(5)
         _M_POWhourNET_HH = get_M_POWhourNET_HH()
-        return (_M_POWhourNET_L, _M_POWhourNET_H, _M_POWhourNET_HH)
+        return (_M_POWhourNET_HH * 65536 + _M_POWhourNET_H * 256 + _M_POWhourNET_L)/100
 
 
 class InverterPacket():
