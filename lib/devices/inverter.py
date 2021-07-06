@@ -8,11 +8,11 @@ class Inverter():
 
     def __init__(self):
         self.config = InverterConfig()
-        # self.serial = serial.Serial(
-        #     port=self.config.PORT,
-        #     baudrate=self.config.BAUDRATE,
-        #     timeout=self.config.TIMEOUT
-        # )
+        self.serial = serial.Serial(
+            port=self.config.PORT,
+            baudrate=self.config.BAUDRATE,
+            timeout=self.config.TIMEOUT
+        )
 
     def _send_packet_and_get_answer(self, packet):
         for sent_byte in packet:
@@ -20,16 +20,40 @@ class Inverter():
             received_byte = self.serial.read(len(sent_byte))
             if sent_byte != received_byte:
                 raise Exception(f"sent {sent_byte}, received {received_byte}")
-        answer = self.serial.readall()
-        return answer
+        answer_packet = self.serial.readall()
+        self._validate_answer_packet(answer_packet)
+        return answer_packet
+
+    def _validate_answer_packet(self, packet):
+        if not packet:
+            raise Exception(f"Answer packet is empty")
+        # first symbol indicates answer statys
+        answer_type = chr(packet[0])
+        if answer_type == 'o':  # otvet :)
+            return packet
+        elif answer_type == 'e':  # error
+            raise Exception(f"Answer packet has error: {packet}")
+        else:
+            raise Exception(f"Unexpected packet: {packet}")
 
     def get_pwr_consmp_from_net(self):
         """Power consumption from network."""
-        packet = InverterPacket(
-            page_size=0x00, 
-            address=self.config.PWR_CONSMP_FROM_NET, 
-            packet_type='read').packet
-        return self._send_packet_and_get_answer(packet)
+        def get_M_POWhourNET_L(self):
+            packet = InverterPacket(page_size=0x00, address=self.config._M_POWhourNET_L, packet_type='read').packet
+            answer = self._send_packet_and_get_answer(packet)
+            return answer[1]
+        def get_M_POWhourNET_H(self):
+            packet = InverterPacket(page_size=0x00, address=self.config._M_POWhourNET_H, packet_type='read').packet
+            answer = self._send_packet_and_get_answer(packet)
+            return answer[1]
+        def get_M_POWhourNET_HH(self):
+            packet = InverterPacket(page_size=0x00, address=self.config._M_POWhourNET_HH, packet_type='read').packet
+            answer = self._send_packet_and_get_answer(packet)
+            return answer[1]
+        _M_POWhourNET_L = get_M_POWhourNET_L()
+        _M_POWhourNET_H = get_M_POWhourNET_H()
+        _M_POWhourNET_HH = get_M_POWhourNET_HH()
+        return (_M_POWhourNET_L, _M_POWhourNET_H, _M_POWhourNET_HH)
 
 
 class InverterPacket():
