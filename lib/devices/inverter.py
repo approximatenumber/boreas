@@ -63,9 +63,12 @@ class InverterPacket():
 
     @property
     def checksum(self):
-        checksum = 0x100 - (sum([self.READ_START_SYMBOL, self.page_size, *self.address]) % 256)
+        _sum = sum([self.READ_START_SYMBOL, self.page_size, *self.address])
+        checksum = 0x100 - (_sum % 256)
+        # check that checksum is correct
+        assert sum([_sum, checksum]) % 256 == 0, f"Wrong checksum: {checksum}"
         return checksum
 
 
-# inverer = Inverter()
-# print(inverer.get_pwr_consmp_from_net())
+inverer = Inverter()
+print(inverer.get_pwr_consmp_from_net())
