@@ -1,8 +1,8 @@
 import serial
 import struct
 import time
-from typing import ByteString
 from lib.devices.device_configurations import InverterConfig
+from lib.wrappers import retry
 
 
 class Inverter():
@@ -39,7 +39,8 @@ class Inverter():
         else:
             raise Exception(f"Unexpected packet: {packet}")
 
-    def _read_value(self, page_size, address):
+    @retry(retries=3, time_between_retries=0.1, exception_class=Exception)
+    def _read_value_value_from_device(self, page_size, address):
         packet = InverterPacket(page_size=page_size, address=address, packet_type='read').packet
         answer = self._send_packet_and_get_answer(packet)
         return answer[1]
@@ -47,11 +48,11 @@ class Inverter():
     def get_pwr_consmp_from_net(self):
         """Power consumption from network."""
         def get_M_POWhourNET_L():
-            self._read_value(page_size=0x00, address=self.config._M_POWhourNET_L)
+            self._read_value_value_from_device(page_size=0x00, address=self.config._M_POWhourNET_L)
         def get_M_POWhourNET_H():
-            self._read_value(page_size=0x00, address=self.config._M_POWhourNET_H)
+            self._read_value_value_from_device(page_size=0x00, address=self.config._M_POWhourNET_H)
         def get_M_POWhourNET_HH():
-            self._read_value(page_size=0x00, address=self.config._M_POWhourNET_HH)
+            self._read_value_value_from_device(page_size=0x00, address=self.config._M_POWhourNET_HH)
         _M_POWhourNET_L = get_M_POWhourNET_L()
         time.sleep(5)
         _M_POWhourNET_H = get_M_POWhourNET_H()
