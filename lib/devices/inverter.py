@@ -48,11 +48,11 @@ class Inverter():
     def get_pwr_consmp_from_net(self):
         """Power consumption from network."""
         def get_M_POWhourNET_L():
-            self._read_value_value_from_device(page_size=0x00, address=self.config._M_POWhourNET_L)
+            return self._read_value_value_from_device(page_size=0x00, address=self.config._M_POWhourNET_L)
         def get_M_POWhourNET_H():
-            self._read_value_value_from_device(page_size=0x00, address=self.config._M_POWhourNET_H)
+            return self._read_value_value_from_device(page_size=0x00, address=self.config._M_POWhourNET_H)
         def get_M_POWhourNET_HH():
-            self._read_value_value_from_device(page_size=0x00, address=self.config._M_POWhourNET_HH)
+            return self._read_value_value_from_device(page_size=0x00, address=self.config._M_POWhourNET_HH)
         _M_POWhourNET_L = get_M_POWhourNET_L()
         time.sleep(5)
         _M_POWhourNET_H = get_M_POWhourNET_H()
