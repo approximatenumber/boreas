@@ -61,6 +61,6 @@ class InverterConfig():
     BAUDRATE = 19200
     TIMEOUT = 2
 
-    _M_POWhourNET_L = [0x44D]
+    _M_POWhourNET_L = [0x04, 0x4D]
     _M_POWhourNET_H = [0x44E]
     _M_POWhourNET_HH = [0x44F]
