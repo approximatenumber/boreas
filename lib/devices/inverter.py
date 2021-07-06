@@ -39,26 +39,25 @@ class Inverter():
         else:
             raise Exception(f"Unexpected packet: {packet}")
 
+    def _read_value(self, page_size, address):
+        packet = InverterPacket(page_size=page_size, address=address, packet_type='read').packet
+        answer = self._send_packet_and_get_answer(packet)
+        return answer[1]
+
     def get_pwr_consmp_from_net(self):
         """Power consumption from network."""
         def get_M_POWhourNET_L():
-            packet = InverterPacket(page_size=0x00, address=self.config._M_POWhourNET_L, packet_type='read').packet
-            answer = self._send_packet_and_get_answer(packet)
-            return answer[1]
+            self._read_value(page_size=0x00, address=self.config._M_POWhourNET_L)
         def get_M_POWhourNET_H():
-            packet = InverterPacket(page_size=0x00, address=self.config._M_POWhourNET_H, packet_type='read').packet
-            answer = self._send_packet_and_get_answer(packet)
-            return answer[1]
+            self._read_value(page_size=0x00, address=self.config._M_POWhourNET_H)
         def get_M_POWhourNET_HH():
-            packet = InverterPacket(page_size=0x00, address=self.config._M_POWhourNET_HH, packet_type='read').packet
-            answer = self._send_packet_and_get_answer(packet)
-            return answer[1]
+            self._read_value(page_size=0x00, address=self.config._M_POWhourNET_HH)
         _M_POWhourNET_L = get_M_POWhourNET_L()
         time.sleep(5)
         _M_POWhourNET_H = get_M_POWhourNET_H()
         time.sleep(5)
         _M_POWhourNET_HH = get_M_POWhourNET_HH()
-        return (_M_POWhourNET_HH * 65536 + _M_POWhourNET_H * 256 + _M_POWhourNET_L)/100
+        return (_M_POWhourNET_HH * 65536 + _M_POWhourNET_H * 256 + _M_POWhourNET_L) / 100
 
 
 class InverterPacket():
