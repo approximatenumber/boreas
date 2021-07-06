@@ -38,15 +38,15 @@ class Inverter():
 
     def get_pwr_consmp_from_net(self):
         """Power consumption from network."""
-        def get_M_POWhourNET_L(self):
+        def get_M_POWhourNET_L():
             packet = InverterPacket(page_size=0x00, address=self.config._M_POWhourNET_L, packet_type='read').packet
             answer = self._send_packet_and_get_answer(packet)
             return answer[1]
-        def get_M_POWhourNET_H(self):
+        def get_M_POWhourNET_H():
             packet = InverterPacket(page_size=0x00, address=self.config._M_POWhourNET_H, packet_type='read').packet
             answer = self._send_packet_and_get_answer(packet)
             return answer[1]
-        def get_M_POWhourNET_HH(self):
+        def get_M_POWhourNET_HH():
             packet = InverterPacket(page_size=0x00, address=self.config._M_POWhourNET_HH, packet_type='read').packet
             answer = self._send_packet_and_get_answer(packet)
             return answer[1]
@@ -94,5 +94,5 @@ class InverterPacket():
         return checksum
 
 
-# inverer = Inverter()
-# print(inverer.get_pwr_consmp_from_net())
+inverer = Inverter()
+print(inverer.get_pwr_consmp_from_net())
