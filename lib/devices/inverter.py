@@ -8,11 +8,11 @@ class Inverter():
 
     def __init__(self):
         self.config = InverterConfig()
-        self.serial = serial.Serial(
-            port=self.config.PORT,
-            baudrate=self.config.BAUDRATE,
-            timeout=self.config.TIMEOUT
-        )
+        # self.serial = serial.Serial(
+        #     port=self.config.PORT,
+        #     baudrate=self.config.BAUDRATE,
+        #     timeout=self.config.TIMEOUT
+        # )
 
     def _send_packet_and_get_answer(self, packet):
         for sent_byte in packet:
@@ -70,5 +70,5 @@ class InverterPacket():
         return checksum
 
 
-inverer = Inverter()
-print(inverer.get_pwr_consmp_from_net())
+# inverer = Inverter()
+# print(inverer.get_pwr_consmp_from_net())
