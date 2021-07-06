@@ -1,5 +1,6 @@
 import serial
 import struct
+import time
 from typing import ByteString
 from lib.devices.device_configurations import InverterConfig
 
@@ -52,7 +53,9 @@ class Inverter():
             answer = self._send_packet_and_get_answer(packet)
             return answer[1]
         _M_POWhourNET_L = get_M_POWhourNET_L()
+        time.sleep(2)
         _M_POWhourNET_H = get_M_POWhourNET_H()
+        time.sleep(2)
         _M_POWhourNET_HH = get_M_POWhourNET_HH()
         return (_M_POWhourNET_L, _M_POWhourNET_H, _M_POWhourNET_HH)
 
