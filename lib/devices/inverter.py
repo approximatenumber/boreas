@@ -25,6 +25,7 @@ class Inverter():
                 raise Exception(f"sent {sent_byte}, received {received_byte}")
         answer_packet = self.serial.readall()
         self._validate_answer_packet(answer_packet)
+        print(f"sent packet: {packet}, received packet: {answer_packet}")
         return answer_packet
 
     def _validate_answer_packet(self, packet):
