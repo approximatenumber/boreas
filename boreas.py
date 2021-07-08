@@ -63,7 +63,10 @@ dispath = {
         'torque': torque_meter.get_peak
     },
     'inverter': {
-        'pwr_consmp_from_net': inverter.get_pwr_consmp_from_net
+        'pwr_consmp_from_net': inverter.get_pwr_consmp_from_net,
+        'pwr_consmp_from_bat': inverter.get_pwr_consmp_from_bat,
+        'pwr_consmp_charge': inverter.get_pwr_consmp_charge,
+        'net_current_sign': inverter.get_net_current_sign
     },
     'misc': {
         'cpu_temp': misc_devices.get_cpu_temp,

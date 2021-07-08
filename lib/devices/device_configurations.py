@@ -64,3 +64,14 @@ class InverterConfig():
     _M_POWhourNET_L = [0x04, 0x4D]
     _M_POWhourNET_H = [0x04, 0x4E]
     _M_POWhourNET_HH = [0x04, 0x4F]
+
+    _M_POWhourMAP_L = [0x04, 0x50]
+    _M_POWhourMAP_H = [0x04, 0x51]
+    _M_POWhourMAP_HH = [0x04, 0x52]
+
+    _M_POWhourMAPCharge_L = [0x04, 0x53]
+    _M_POWhourMAPCharge_H = [0x04, 0x54]
+    _M_POWhourMAPCharge_HH = [0x04, 0x55]
+
+    _M_POWhourNET_sign = [0x05, 0x92]
+
