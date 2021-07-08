@@ -20,6 +20,7 @@ class Inverter():
         time.sleep(1)
         self.serial.flushInput()
         self.serial.flushOutput()
+        time.sleep(1)
         for sent_byte in packet:
             self.serial.write(sent_byte)
             received_byte = self.serial.read(len(sent_byte))
