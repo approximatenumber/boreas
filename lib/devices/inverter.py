@@ -17,6 +17,8 @@ class Inverter():
 
     def _send_packet_and_get_answer(self, packet):
         print(f"sending packet {packet}...")
+        self.serial.flush()
+        time.sleep(2)
         for sent_byte in packet:
             self.serial.write(sent_byte)
             received_byte = self.serial.read(len(sent_byte))
@@ -54,9 +56,7 @@ class Inverter():
         def get_M_POWhourNET_HH():
             return self._read_value_value_from_device(page_size=0x00, address=self.config._M_POWhourNET_HH)
         _M_POWhourNET_L = get_M_POWhourNET_L()
-        time.sleep(5)
         _M_POWhourNET_H = get_M_POWhourNET_H()
-        time.sleep(5)
         _M_POWhourNET_HH = get_M_POWhourNET_HH()
         return (_M_POWhourNET_HH * 65536 + _M_POWhourNET_H * 256 + _M_POWhourNET_L) / 100
 
@@ -69,9 +69,7 @@ class Inverter():
         def get_M_POWhourMAP_HH():
             return self._read_value_value_from_device(page_size=0x00, address=self.config._M_POWhourMAP_HH)
         _M_POWhourMAP_L = get_M_POWhourMAP_L()
-        time.sleep(5)
         _M_POWhourMAP_H = get_M_POWhourMAP_H()
-        time.sleep(5)
         _M_POWhourMAP_HH = get_M_POWhourMAP_HH()
         return (_M_POWhourMAP_HH * 65536 + _M_POWhourMAP_H * 256 + _M_POWhourMAP_L) / 100
 
@@ -83,9 +81,7 @@ class Inverter():
         def get_M_POWhourMAPCharge_HH():
             return self._read_value_value_from_device(page_size=0x00, address=self.config._M_POWhourMAPCharge_HH)
         _M_POWhourMAPCharge_L = get_M_POWhourMAPCharge_L()
-        time.sleep(5)
         _M_POWhourMAPCharge_H = get_M_POWhourMAPCharge_H()
-        time.sleep(5)
         _M_POWhourMAPCharge_HH = get_M_POWhourMAPCharge_HH()
         return (_M_POWhourMAPCharge_HH * 65536 + _M_POWhourMAPCharge_H * 256 + _M_POWhourMAPCharge_L) / 100
 
@@ -93,7 +89,6 @@ class Inverter():
         def get_net_current_sign():
             return self._read_value_value_from_device(page_size=0x00, address=self.config._M_POWhourNET_sign)
         sign = get_net_current_sign()
-        time.sleep(5)
         return sign
 
 
