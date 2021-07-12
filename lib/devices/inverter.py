@@ -85,7 +85,7 @@ class Inverter():
 
     def get_pwr_consmp_charge(self):
         def get_M_POWhourMAPCharge_L():
-            value = self._read_value_from_device(page_size=0x00, address=self.config._M_POWhourMAPCharge_L)
+            return self._read_value_from_device(page_size=0x00, address=self.config._M_POWhourMAPCharge_L)
         def get_M_POWhourMAPCharge_H():
             return self._read_value_from_device(page_size=0x00, address=self.config._M_POWhourMAPCharge_H)
         def get_M_POWhourMAPCharge_HH():
@@ -96,14 +96,13 @@ class Inverter():
         return (_M_POWhourMAPCharge_HH * 65536 + _M_POWhourMAPCharge_H * 256 + _M_POWhourMAPCharge_L) / 100
 
     def get_net_current_sign(self):
-        value = self._read_value_from_device(
-            page_size=0x03,
-            address=self.config._M_POWhourNET_sign_1,
-            signed=True)
         # _M_POWhourNET_sign_2 = self._read_value_from_device(page_size=0x00, address=self.config._M_POWhourNET_sign_2)
         # _M_POWhourNET_sign_3 = self._read_value_from_device(page_size=0x00, address=self.config._M_POWhourNET_sign_3)
         # _M_POWhourNET_sign_4 = self._read_value_from_device(page_size=0x00, address=self.config._M_POWhourNET_sign_4)
-        return value
+        return self._read_value_from_device(
+            page_size=0x03,
+            address=self.config._M_POWhourNET_sign_1,
+            signed=True)
 
 class InverterPacket():
 
