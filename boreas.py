@@ -126,7 +126,7 @@ def main():
     misc_devices = ['misc']
 
     if args.only_device:
-        devices_to_scan = [args.only_device]
+        devices_to_scan = [[args.only_device]]
     else:
         devices_to_scan = [devices_on_same_port1, devices_on_same_port2, devices_on_same_port3, misc_devices]
 
