@@ -17,7 +17,6 @@ class Inverter():
 
     def _send_packet_and_get_answer(self, packet):
         print(f"sending packet {packet}...")
-        time.sleep(1)
         self.serial.flushInput()
         self.serial.flushOutput()
         for sent_byte in packet:

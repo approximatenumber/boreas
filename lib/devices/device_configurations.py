@@ -59,7 +59,7 @@ class SpeedMeterConfig():
 class InverterConfig():
     PORT = '/dev/ttyMOD1'
     BAUDRATE = 19200
-    TIMEOUT = 2
+    TIMEOUT = 4
 
     _M_POWhourNET_L = [0x04, 0x4D]
     _M_POWhourNET_H = [0x04, 0x4E]
