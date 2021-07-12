@@ -94,7 +94,7 @@ class Inverter():
         # _M_POWhourNET_sign_2 = self._read_value_from_device(page_size=0x00, address=self.config._M_POWhourNET_sign_2)
         # _M_POWhourNET_sign_3 = self._read_value_from_device(page_size=0x00, address=self.config._M_POWhourNET_sign_3)
         # _M_POWhourNET_sign_4 = self._read_value_from_device(page_size=0x00, address=self.config._M_POWhourNET_sign_4)
-        return struct.unpack('i', value)
+        return struct.unpack('i', value)[0]
 
 class InverterPacket():
 
