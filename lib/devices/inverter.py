@@ -20,7 +20,6 @@ class Inverter():
         time.sleep(1)
         self.serial.flushInput()
         self.serial.flushOutput()
-        time.sleep(1)
         for sent_byte in packet:
             self.serial.write(sent_byte)
             received_byte = self.serial.read(len(sent_byte))
@@ -43,7 +42,7 @@ class Inverter():
         else:
             raise Exception(f"Unexpected packet: {packet}")
 
-    @retry(retries=3, time_between_retries=5, exception_class=Exception)
+    @retry(retries=3, time_between_retries=2, exception_class=Exception)
     def _read_value_from_device(self, page_size, address, signed=False):
         packet = InverterPacket(page_size=page_size, address=address, packet_type='read').packet
         answer = self._send_packet_and_get_answer(packet)
