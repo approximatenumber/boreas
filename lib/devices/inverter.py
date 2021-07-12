@@ -88,9 +88,11 @@ class Inverter():
         return (_M_POWhourMAPCharge_HH * 65536 + _M_POWhourMAPCharge_H * 256 + _M_POWhourMAPCharge_L) / 100
 
     def get_net_current_sign(self):
-        def get_net_current_sign():
-            return self._read_value_from_device(page_size=0x00, address=self.config._M_POWhourNET_sign)
-        sign = get_net_current_sign()
+        _M_POWhourNET_sign_1 = self._read_value_from_device(page_size=0x03, address=self.config._M_POWhourNET_sign_1)
+        # _M_POWhourNET_sign_2 = self._read_value_from_device(page_size=0x00, address=self.config._M_POWhourNET_sign_2)
+        # _M_POWhourNET_sign_3 = self._read_value_from_device(page_size=0x00, address=self.config._M_POWhourNET_sign_3)
+        # _M_POWhourNET_sign_4 = self._read_value_from_device(page_size=0x00, address=self.config._M_POWhourNET_sign_4)
+        return _M_POWhourNET_sign_1
         return sign
 
 
