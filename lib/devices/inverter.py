@@ -47,7 +47,9 @@ class Inverter():
     def _read_value_from_device(self, page_size, address):
         packet = InverterPacket(page_size=page_size, address=address, packet_type='read').packet
         answer = self._send_packet_and_get_answer(packet)
-        return answer[1]
+        first_value_byte = 1
+        last_value_byte = page_size + 2  # 0x00 is for 1 byte; 0x03 is for 4 bytes
+        return answer[first_value_byte:last_value_byte]
 
     def get_pwr_consmp_from_net(self):
         """Power consumption from network."""
