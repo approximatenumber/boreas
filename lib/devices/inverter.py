@@ -44,17 +44,23 @@ class Inverter():
             raise Exception(f"Unexpected packet: {packet}")
 
     @retry(retries=3, time_between_retries=5, exception_class=Exception)
-    def _read_value_from_device(self, page_size, address):
+    def _read_value_from_device(self, page_size, address, signed=False):
         packet = InverterPacket(page_size=page_size, address=address, packet_type='read').packet
         answer = self._send_packet_and_get_answer(packet)
         first_value_byte = 1
-        last_value_byte = page_size + 2  # 0x00 is for 1 byte; 0x03 is for 4 bytes
-        return answer[first_value_byte:last_value_byte]
+        last_value_byte = page_size + first_value_byte + 1  # 0x00 is for 1 byte; 0x03 is for 4 bytes
+        value_in_bytes = answer[first_value_byte:last_value_byte]
+        if type(value_in_bytes) == bytes:
+            return int.from_bytes(value_in_bytes, 'little', signed=signed)
+        elif type(value_in_bytes) == int:
+            return value_in_bytes
+        else:
+            raise Exception(f"wrong value type {type(value_in_bytes)}: {value_in_bytes}")
 
     def get_pwr_consmp_from_net(self):
         """Power consumption from network."""
         def get_M_POWhourNET_L():
-            return self._read_value_from_device(page_size=0x00, address=self.config._M_POWhourNET_L)
+            value = self._read_value_from_device(page_size=0x00, address=self.config._M_POWhourNET_L)
         def get_M_POWhourNET_H():
             return self._read_value_from_device(page_size=0x00, address=self.config._M_POWhourNET_H)
         def get_M_POWhourNET_HH():
@@ -79,7 +85,7 @@ class Inverter():
 
     def get_pwr_consmp_charge(self):
         def get_M_POWhourMAPCharge_L():
-            return self._read_value_from_device(page_size=0x00, address=self.config._M_POWhourMAPCharge_L)
+            value = self._read_value_from_device(page_size=0x00, address=self.config._M_POWhourMAPCharge_L)
         def get_M_POWhourMAPCharge_H():
             return self._read_value_from_device(page_size=0x00, address=self.config._M_POWhourMAPCharge_H)
         def get_M_POWhourMAPCharge_HH():
@@ -90,11 +96,14 @@ class Inverter():
         return (_M_POWhourMAPCharge_HH * 65536 + _M_POWhourMAPCharge_H * 256 + _M_POWhourMAPCharge_L) / 100
 
     def get_net_current_sign(self):
-        value = self._read_value_from_device(page_size=0x03, address=self.config._M_POWhourNET_sign_1)
+        value = self._read_value_from_device(
+            page_size=0x03,
+            address=self.config._M_POWhourNET_sign_1,
+            signed=True)
         # _M_POWhourNET_sign_2 = self._read_value_from_device(page_size=0x00, address=self.config._M_POWhourNET_sign_2)
         # _M_POWhourNET_sign_3 = self._read_value_from_device(page_size=0x00, address=self.config._M_POWhourNET_sign_3)
         # _M_POWhourNET_sign_4 = self._read_value_from_device(page_size=0x00, address=self.config._M_POWhourNET_sign_4)
-        return struct.unpack('i', value)[0]
+        return value
 
 class InverterPacket():
 
@@ -118,9 +127,9 @@ class InverterPacket():
         for element in _packet:
             # https://docs.python.org/3/library/struct.html#format-characters
             if element <= 255:
-                size = 'B' # unsigned char
+                size = 'B'  # unsigned char
             else:
-                size = 'H' # unsigned short
+                size = 'H'  # unsigned short
             _byte = struct.pack(size, element)
             _bytes.append(_byte)
         return _bytes
