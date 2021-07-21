@@ -1,4 +1,4 @@
-from lib.devices.device_configurations import ControllerConfig
+from conf.device_configurations import ControllerConfig
 from lib.devices.modbus_device import ModBusDevice
 from lib.wrappers import divide_by_10
 

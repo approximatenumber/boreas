@@ -1,7 +1,7 @@
 import serial
 import struct
 import time
-from lib.devices.device_configurations import InverterConfig
+from conf.device_configurations import InverterConfig
 from lib.wrappers import retry
 
 
@@ -53,28 +53,16 @@ class Inverter():
 
     def get_pwr_consmp_from_net(self):
         """Power consumption from network."""
-        def get_M_POWhourNET_L():
-            return self._read_value_from_device(page_size=0x00, address=self.config._M_POWhourNET_L)
-        def get_M_POWhourNET_H():
-            return self._read_value_from_device(page_size=0x00, address=self.config._M_POWhourNET_H)
-        def get_M_POWhourNET_HH():
-            return self._read_value_from_device(page_size=0x00, address=self.config._M_POWhourNET_HH)
-        _M_POWhourNET_L = get_M_POWhourNET_L()
-        _M_POWhourNET_H = get_M_POWhourNET_H()
-        _M_POWhourNET_HH = get_M_POWhourNET_HH()
+        _M_POWhourNET_L = self._read_value_from_device(page_size=0x00, address=self.config._M_POWhourNET_L)
+        _M_POWhourNET_H = self._read_value_from_device(page_size=0x00, address=self.config._M_POWhourNET_H)
+        _M_POWhourNET_HH = self._read_value_from_device(page_size=0x00, address=self.config._M_POWhourNET_HH)
         return (_M_POWhourNET_HH * 65536 + _M_POWhourNET_H * 256 + _M_POWhourNET_L) / 100
 
     def get_pwr_consmp_from_bat(self):
         """Power consumption from battery."""
-        def get_M_POWhourMAP_L():
-            return self._read_value_from_device(page_size=0x00, address=self.config._M_POWhourMAP_L)
-        def get_M_POWhourMAP_H():
-            return self._read_value_from_device(page_size=0x00, address=self.config._M_POWhourMAP_H)
-        def get_M_POWhourMAP_HH():
-            return self._read_value_from_device(page_size=0x00, address=self.config._M_POWhourMAP_HH)
-        _M_POWhourMAP_L = get_M_POWhourMAP_L()
-        _M_POWhourMAP_H = get_M_POWhourMAP_H()
-        _M_POWhourMAP_HH = get_M_POWhourMAP_HH()
+        _M_POWhourMAP_L = self._read_value_from_device(page_size=0x00, address=self.config._M_POWhourMAP_L)
+        _M_POWhourMAP_H = self._read_value_from_device(page_size=0x00, address=self.config._M_POWhourMAP_H)
+        _M_POWhourMAP_HH = self._read_value_from_device(page_size=0x00, address=self.config._M_POWhourMAP_HH)
         return (_M_POWhourMAP_HH * 65536 + _M_POWhourMAP_H * 256 + _M_POWhourMAP_L) / 100
 
     def get_pwr_consmp_charge(self):
@@ -90,11 +78,11 @@ class Inverter():
         return (_M_POWhourMAPCharge_HH * 65536 + _M_POWhourMAPCharge_H * 256 + _M_POWhourMAPCharge_L) / 100
 
     def get_net_current_sign(self):
-        value = self._read_value_from_device(page_size=0x03, address=self.config._M_POWhourNET_sign_1)
-        # _M_POWhourNET_sign_2 = self._read_value_from_device(page_size=0x00, address=self.config._M_POWhourNET_sign_2)
-        # _M_POWhourNET_sign_3 = self._read_value_from_device(page_size=0x00, address=self.config._M_POWhourNET_sign_3)
-        # _M_POWhourNET_sign_4 = self._read_value_from_device(page_size=0x00, address=self.config._M_POWhourNET_sign_4)
-        return struct.unpack('i', value)[0]
+        _M_POWhourNET_sign_1 = self._read_value_from_device(page_size=0x00, address=self.config._M_POWhourNET_sign_1)
+        _M_POWhourNET_sign_2 = self._read_value_from_device(page_size=0x00, address=self.config._M_POWhourNET_sign_2)
+        _M_POWhourNET_sign_3 = self._read_value_from_device(page_size=0x00, address=self.config._M_POWhourNET_sign_3)
+        _M_POWhourNET_sign_4 = self._read_value_from_device(page_size=0x00, address=self.config._M_POWhourNET_sign_4)
+        return (_M_POWhourNET_sign_4 << 24 + _M_POWhourNET_sign_3 << 16 + _M_POWhourNET_sign_2 << 8 + _M_POWhourNET_sign_1) / 100
 
 class InverterPacket():
 
