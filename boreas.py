@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from time import sleep
 import logging
 import argparse
@@ -107,6 +109,7 @@ def main():
     
     parser = argparse.ArgumentParser()
     parser.add_argument('-d', '--debug', action='store_true', help='enable debug mode')
+    parser.add_argument('-o', '--only-device', required=False, action='store', help='poll only one device')
     args = parser.parse_args()
 
     if args.debug:
@@ -122,10 +125,13 @@ def main():
     # misc devices
     misc_devices = ['misc']
 
-    all_devices = [devices_on_same_port1, devices_on_same_port2, devices_on_same_port3, misc_devices]
+    if args.only_device:
+        devices_to_scan = [[args.only_device]]
+    else:
+        devices_to_scan = [devices_on_same_port1, devices_on_same_port2, devices_on_same_port3, misc_devices]
 
     threads = []
-    for devices_per_port in all_devices:
+    for devices_per_port in devices_to_scan:
         thread = threading.Thread(target=collect_data_and_publish, args=([devices_per_port]))
         thread.start()
         threads.append(thread)

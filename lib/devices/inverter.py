@@ -17,10 +17,8 @@ class Inverter():
 
     def _send_packet_and_get_answer(self, packet):
         print(f"sending packet {packet}...")
-        time.sleep(1)
         self.serial.flushInput()
         self.serial.flushOutput()
-        time.sleep(1)
         for sent_byte in packet:
             self.serial.write(sent_byte)
             received_byte = self.serial.read(len(sent_byte))
@@ -43,13 +41,19 @@ class Inverter():
         else:
             raise Exception(f"Unexpected packet: {packet}")
 
-    @retry(retries=3, time_between_retries=5, exception_class=Exception)
-    def _read_value_from_device(self, page_size, address):
+    @retry(retries=3, time_between_retries=2, exception_class=Exception)
+    def _read_value_from_device(self, page_size, address, signed=False):
         packet = InverterPacket(page_size=page_size, address=address, packet_type='read').packet
         answer = self._send_packet_and_get_answer(packet)
         first_value_byte = 1
-        last_value_byte = page_size + 2  # 0x00 is for 1 byte; 0x03 is for 4 bytes
-        return answer[first_value_byte:last_value_byte]
+        last_value_byte = page_size + first_value_byte + 1  # 0x00 is for 1 byte; 0x03 is for 4 bytes
+        value_in_bytes = answer[first_value_byte:last_value_byte]
+        if type(value_in_bytes) == bytes:
+            return int.from_bytes(value_in_bytes, 'little', signed=signed)
+        elif type(value_in_bytes) == int:
+            return value_in_bytes
+        else:
+            raise Exception(f"wrong value type {type(value_in_bytes)}: {value_in_bytes}")
 
     def get_pwr_consmp_from_net(self):
         """Power consumption from network."""
@@ -106,9 +110,9 @@ class InverterPacket():
         for element in _packet:
             # https://docs.python.org/3/library/struct.html#format-characters
             if element <= 255:
-                size = 'B' # unsigned char
+                size = 'B'  # unsigned char
             else:
-                size = 'H' # unsigned short
+                size = 'H'  # unsigned short
             _byte = struct.pack(size, element)
             _bytes.append(_byte)
         return _bytes
