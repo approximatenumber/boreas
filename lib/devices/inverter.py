@@ -1,9 +1,10 @@
 import serial
 import struct
-import time
+import logging
 from conf.device_configurations import InverterConfig
 from lib.wrappers import retry
 
+logger = logging.getLogger('boreas')
 
 class Inverter():
 
@@ -16,7 +17,7 @@ class Inverter():
         )
 
     def _send_packet_and_get_answer(self, packet):
-        print(f"sending packet {packet}...")
+        logger.info(f"Sending packet {packet}...")
         self.serial.flushInput()
         self.serial.flushOutput()
         for sent_byte in packet:
@@ -26,7 +27,7 @@ class Inverter():
                 raise Exception(f"sent {sent_byte}, received {received_byte}")
         answer_packet = self.serial.readall()
         self._validate_answer_packet(answer_packet)
-        print(f"sent packet: {packet}, received packet: {answer_packet}")
+        logger.debug(f"Sent packet: {packet}, received packet: {answer_packet}")
         return answer_packet
 
     def _validate_answer_packet(self, packet):
@@ -86,7 +87,7 @@ class Inverter():
         _M_POWhourNET_sign_2 = self._read_value_from_device(page_size=0x00, address=self.config._M_POWhourNET_sign_2)
         _M_POWhourNET_sign_3 = self._read_value_from_device(page_size=0x00, address=self.config._M_POWhourNET_sign_3)
         _M_POWhourNET_sign_4 = self._read_value_from_device(page_size=0x00, address=self.config._M_POWhourNET_sign_4)
-        return (_M_POWhourNET_sign_4 << 24 + _M_POWhourNET_sign_3 << 16 + _M_POWhourNET_sign_2 << 8 + _M_POWhourNET_sign_1) / 100
+        return ((_M_POWhourNET_sign_4 << 24) + (_M_POWhourNET_sign_3 << 16) + (_M_POWhourNET_sign_2 << 8) + _M_POWhourNET_sign_1) / 100
 
 class InverterPacket():
 
