@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from time import sleep
 import logging
 import argparse
@@ -9,6 +11,7 @@ from lib.devices.controller import Controller
 from lib.devices.wind_sensor import WindSensor
 from lib.devices.torque_meter import TorqueMeter
 from lib.devices.speed_meter import SpeedMeter
+from lib.devices.inverter import Inverter
 from lib.devices.misc import MiscDevices
 from lib.logger import Logger
 
@@ -25,6 +28,7 @@ controller = Controller()
 wind_sensor = WindSensor()
 torque_meter = TorqueMeter()
 speed_meter = SpeedMeter()
+inverter = Inverter()
 misc_devices = MiscDevices()
 
 dispath = {
@@ -59,6 +63,12 @@ dispath = {
     },
     'torque_meter': {
         'torque': torque_meter.get_peak
+    },
+    'inverter': {
+        'pwr_consmp_from_net': inverter.get_pwr_consmp_from_net,
+        'pwr_consmp_from_bat': inverter.get_pwr_consmp_from_bat,
+        'pwr_consmp_charge': inverter.get_pwr_consmp_charge,
+        'net_current_sign': inverter.get_net_current_sign
     },
     'misc': {
         'cpu_temp': misc_devices.get_cpu_temp,
@@ -99,6 +109,7 @@ def main():
     
     parser = argparse.ArgumentParser()
     parser.add_argument('-d', '--debug', action='store_true', help='enable debug mode')
+    parser.add_argument('-o', '--only-device', required=False, action='store', help='poll only one device')
     args = parser.parse_args()
 
     if args.debug:
@@ -109,12 +120,18 @@ def main():
     devices_on_same_port1 = ['controller', 'wind_sensor']
     # second serial port
     devices_on_same_port2 = ['torque_meter', 'speed_meter']
+    # third serial port
+    devices_on_same_port3 = ['inverter']
     # misc devices
     misc_devices = ['misc']
-    all_devices = [devices_on_same_port1, devices_on_same_port2, misc_devices]
+
+    if args.only_device:
+        devices_to_scan = [[args.only_device]]
+    else:
+        devices_to_scan = [devices_on_same_port1, devices_on_same_port2, devices_on_same_port3, misc_devices]
 
     threads = []
-    for devices_per_port in all_devices:
+    for devices_per_port in devices_to_scan:
         thread = threading.Thread(target=collect_data_and_publish, args=([devices_per_port]))
         thread.start()
         threads.append(thread)

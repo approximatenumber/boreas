@@ -1,5 +1,5 @@
 from lib.devices.black_box_meter_device import BlackBoxMeterDevice
-from lib.devices.device_configurations import SpeedMeterConfig
+from conf.device_configurations import SpeedMeterConfig
 from lib.wrappers import multiply_by_10
 
 

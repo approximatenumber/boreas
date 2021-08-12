@@ -1,4 +1,4 @@
-from lib.devices.device_configurations import TorqueMeterConfig
+from conf.device_configurations import TorqueMeterConfig
 from lib.devices.black_box_meter_device import BlackBoxMeterDevice
 
 class TorqueMeter(BlackBoxMeterDevice):
